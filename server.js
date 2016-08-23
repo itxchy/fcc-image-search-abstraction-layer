@@ -51,6 +51,7 @@ app.get('/api/search/:query', (req, res) => {
         }
     };
 
+    // TODO: use request promise to write the query to mongoDB after the results are returned
     request.getAsync(requestOptions, (err, apiResponse, body) => {
 
         if (err) {
