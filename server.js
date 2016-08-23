@@ -57,13 +57,15 @@ app.get('/api/search/:query', (req, res) => {
             return res.status(500).end('Server error:', err);
         } 
 
+        body = JSON.parse(body);
+
         res.json(body);
 
         return body;
     })
 
     .then(function (body) {
-        console.log('body', body);
+        console.log('body:', body);
 
         // write search query and time to database
 
