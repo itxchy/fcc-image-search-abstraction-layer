@@ -1,6 +1,7 @@
 const compression = require('compression');
 const env         = require('node-env-file');
 const request     = require('request-promise');
+const mongoose    = require('mongoose');
 const express     = require('express');
 const app         = express();
 
@@ -26,13 +27,25 @@ if (process.env.NODE_ENV !== 'production') {
 
 let clientID = process.env.CLIENT_ID;
 
-// Connect to MongoDB
+/** Connect to MongoDB
+ *
+ */
+
+// dev URI
+mongoose.connect('mongodb://localhost:27017/local');
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Mongoose encountered an error'));
+db.once('open', () => {
+    console.log('mongoDB connected!');
+});
 
 
 /** 
  * Handle requests
  */
- 
+
 app.use(compression());
 
 app.use('/', express.static(__dirname + '/public'));
