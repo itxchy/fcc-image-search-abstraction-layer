@@ -18,7 +18,7 @@ const app         = express();
 
 
 /**
- * Set up the Imgur API authorization as an environment variable 
+ * Set up the Imgur API Client ID as an environment variable 
  */ 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -27,8 +27,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 let clientID = process.env.CLIENT_ID;
 
-/** Connect to MongoDB
- *
+/** 
+ * Connect to MongoDB
  */
 
 // dev URI
@@ -71,11 +71,14 @@ app.get('/api/search/:query', (req, res) => {
         
         let body = JSON.parse(apiResponse);
 
-        res.json(body);
-        return body;
+        let formattedResults = formatResults(body);
+
+        //console.log(formattedResults);
+        res.json(formattedResults);
+        return formattedResults;
     })
 
-    .then( body => {
+    .then( formattedResults => {
 
         // write search query and time to database
         
@@ -88,6 +91,36 @@ app.get('/api/search/:query', (req, res) => {
     });
 
 });
+
+function formatResults(body) {
+
+    let results = body.data.map( result => {
+
+        if (result.cover) {
+            return {
+                image_source: result.link,
+                image_url: `http://i.imgur.com/${result.cover}.jpg`,
+                title: result.title,
+                description: result.description
+            };
+        } else if (result.type) {
+            return {
+                image_source: `http://imgur.com/gallery/${result.id}`,
+                image_url: result.link,
+                title: result.title,
+                description: result.description
+            };
+        } else {
+            return {
+                image_url: result.link,
+                title: result.title,
+                description: result.description  
+            };     
+        }
+    });
+
+    return results;
+}
 
 var server = app.listen(process.env.PORT || 4000, () => {
     console.log('Express app listening!');
