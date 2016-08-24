@@ -59,9 +59,10 @@ app.get('/api/search/:query', (req, res) => {
     })
 
     .then( body => {
-        console.log('body:', body, 'end!');
 
         // write search query and time to database
+        
+            // Only show the most recent 20 queries, delete the oldest
 
     })
 
