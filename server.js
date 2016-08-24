@@ -1,8 +1,6 @@
 const compression = require('compression');
-const Promise     = require('bluebird');
 const env         = require('node-env-file');
-const request     = require('request');
-Promise.promisifyAll(request);
+const request     = require('request-promise');
 const express     = require('express');
 const app         = express();
 
@@ -41,8 +39,8 @@ app.get('/api/recent', (req, res) => {
 
 app.get('/api/search/:query', (req, res) => {
 
-    let query = req.params.query;
-    let offset = req.query.offset || 1;
+    const query = req.params.query;
+    const offset = req.query.offset || 1;
     let imgurURI = `https://api.imgur.com/3/gallery/search/?page=${offset}&q=${query}`;
     let requestOptions = {
         url: imgurURI,
@@ -52,24 +50,23 @@ app.get('/api/search/:query', (req, res) => {
     };
 
     // TODO: use request promise to write the query to mongoDB after the results are returned
-    request.getAsync(requestOptions, (err, apiResponse, body) => {
-
-        if (err) {
-            return res.status(500).end('Server error:', err);
-        } 
-
-        body = JSON.parse(body);
+    request(requestOptions).then( apiResponse => {
+        
+        let body = JSON.parse(apiResponse);
 
         res.json(body);
-
         return body;
     })
 
-    .then(function (body) {
-        console.log('body:', body);
+    .then( body => {
+        console.log('body:', body, 'end!');
 
         // write search query and time to database
 
+    })
+
+    .catch( error => {
+        return res.status(500).end('A server error occured:', error);
     });
 
 });
