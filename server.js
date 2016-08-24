@@ -4,7 +4,7 @@ const request     = require('request-promise');
 const express     = require('express');
 const app         = express();
 
-/* 
+/**
  * To set up this API, a valid Client ID from imgur is required.
  * 
  * After registering the app with Imgur on their API page, 
@@ -16,7 +16,9 @@ const app         = express();
  */
 
 
-// Set up the Imgur API authorization as an environment variable 
+/**
+ * Set up the Imgur API authorization as an environment variable 
+ */ 
 
 if (process.env.NODE_ENV !== 'production') {
     env(__dirname + '/.env');
@@ -27,8 +29,10 @@ let clientID = process.env.CLIENT_ID;
 // Connect to MongoDB
 
 
-// Handle requests
-
+/** 
+ * Handle requests
+ */
+ 
 app.use(compression());
 
 app.use('/', express.static(__dirname + '/public'));
