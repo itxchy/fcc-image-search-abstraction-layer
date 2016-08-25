@@ -21,6 +21,7 @@ const app         = express();
  * Set up the Imgur API Client ID as an environment variable 
  */ 
 
+// use a .env to declare process.env.CLIENT_ID in a development environment.
 if (process.env.NODE_ENV !== 'production') {
     env(__dirname + '/.env');
 }
@@ -33,14 +34,9 @@ let clientID = process.env.CLIENT_ID;
 
 // dev URI
 mongoose.connect('mongodb://localhost:27017/local');
-
 const db = mongoose.connection;
-
 db.on('error', console.error.bind(console, 'Mongoose encountered an error'));
-db.once('open', () => {
-    console.log('mongoDB connected!');
-});
-
+db.once('open', () => console.log('mongoDB connected!') );
 
 /** 
  * Handle requests
