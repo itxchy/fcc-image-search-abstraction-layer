@@ -34,9 +34,10 @@ let clientID = process.env.CLIENT_ID;
 
 // dev URI
 mongoose.connect('mongodb://localhost:27017/local');
+
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Mongoose encountered an error'));
-db.once('open', () => console.log('mongoDB connected!') );
+db.on('error', console.error.bind(console, '\n ERROR: Mongoose encountered an error ->'));
+db.once('open', () => console.log('\t\u2713 mongoDB connected...') );
 
 /** 
  * Handle requests
@@ -66,19 +67,23 @@ app.get('/api/search/:query', (req, res) => {
     request(requestOptions).then( apiResponse => {
         
         let body = JSON.parse(apiResponse);
-
         let formattedResults = formatResults(body);
 
         //console.log(formattedResults);
         res.json(formattedResults);
-        return formattedResults;
-    })
+        return;
 
-    .then( formattedResults => {
+    }).then( () => {
 
         // write search query and time to database
+        let currentSearch = {
+            query: query,
+            timestamp: Date.now()
+        };
+
         
-            // Only show the most recent 20 queries, delete the oldest
+
+        console.log(currentSearch);
 
     })
 
@@ -119,7 +124,7 @@ function formatResults(body) {
 }
 
 var server = app.listen(process.env.PORT || 4000, () => {
-    console.log('Express app listening!');
+    console.log('\n\t\u2713 Express app listening...');
 });
 
 module.exports = server;
