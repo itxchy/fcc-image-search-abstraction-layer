@@ -13,21 +13,26 @@ exports.findRecentSearches = function (res) {
                 return reject(res.status(500).send('A database error occured: ', err));
             }
 
-            let recentSearchQueries = result.map( search => {
-
-                let convertedTimestamp = new Date(+search.timestamp);
-
-                let formattedResult = {
-                    query: search.query,
-                    time: convertedTimestamp
-                };
-
-                return formattedResult;
-            });
+            let recentSearchQueries = formatResults(result);
 
             return resolve(recentSearchQueries);
         });
+    });
+};
 
+function formatResults(result) {
+
+    let formattedRecentQueries = result.map( search => {
+
+        let convertedTimestamp = new Date(+search.timestamp);
+
+        let formattedResult = {
+            query: search.query,
+            time: convertedTimestamp
+        };
+
+        return formattedResult;
     });
 
-};
+    return formattedRecentQueries;
+}
