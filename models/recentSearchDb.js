@@ -41,7 +41,6 @@ exports.saveRecentSearch = function (query) {
     }); 
 
     return newRecentSearch.save();
-
 };
 
 /**
