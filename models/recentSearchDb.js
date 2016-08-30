@@ -17,7 +17,7 @@ exports.findRecentSearches = function (res) {
         .exec((err, result) => {
 
             if (err) {
-                return reject(res.status(500).send('A database error occured: ', err));
+                return reject(err);
             }
 
             let recentSearchQueries = formatResults(result);
