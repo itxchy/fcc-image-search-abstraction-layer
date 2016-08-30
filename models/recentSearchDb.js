@@ -68,4 +68,3 @@ function formatResults(result) {
 
     return formattedRecentQueries;
 }
-
