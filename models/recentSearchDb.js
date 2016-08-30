@@ -1,10 +1,15 @@
 const RecentSearch = require('./recentSearch');
 
+/**
+ * Queries the database for the 20 most recent searches
+ * 
+ * @param {object} res - Express response object
+ * @returns {promise}
+ */
 exports.findRecentSearches = function (res) {
 
     return new Promise((resolve, reject) => {
 
-        // Retrieves the 20 most recent search queries from the database
         RecentSearch
         .find()
         .sort({ _id: -1 })
