@@ -41,10 +41,11 @@ router.get('/:query', (req, res) => {
 
 /**
  * Formats the search results to display the correct links depending 
- * on the type of result
+ * on the type of result, as well as the title and description of the 
+ * image
  * 
- * @param {string} query - The search query as a param
- * @returns {promise} Returns a promise from Mongoose's .save() method
+ * @param {object} body - The body of Imgur's api response
+ * @returns {array} Returns an array of the formatted search results
  */
 function formatResults(body) {
 
