@@ -16,6 +16,7 @@ router.get('/:query', (req, res) => {
         }
     };
 
+    // calls Imgur's API with the options above
     request(requestOptions).then( apiResponse => {
         
         let body = JSON.parse(apiResponse);
