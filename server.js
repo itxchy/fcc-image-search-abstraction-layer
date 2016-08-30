@@ -1,4 +1,5 @@
 const mongoose       = require('mongoose');
+mongoose.Promise = require('bluebird');
 const RecentSearch   = require('./models/recentSearch');
 const recentSearchDb = require('./models/recentSearchDb');
 
@@ -57,9 +58,8 @@ app.get('/api/recent', (req, res) => {
             return res.json(recentSearchQueries);
         })
         .catch( err => {
-            return res.status(500).send('A database error occured: ', err)
+            return res.status(500).send('A database error occured: ', err);
         });
-
 });
 
 app.get('/api/search/:query', (req, res) => {
@@ -74,33 +74,20 @@ app.get('/api/search/:query', (req, res) => {
         }
     };
 
-    // TODO: use request promise to write the query to mongoDB after the results are returned
     request(requestOptions).then( apiResponse => {
         
         let body = JSON.parse(apiResponse);
         let formattedResults = formatResults(body);
 
-        //console.log(formattedResults);
         res.json(formattedResults);
-        return;
 
-    }).then( () => {
+        // returns Mongoose's save operation promise
+        return recentSearchDb.saveRecentSearch(query);
 
-        // write search query and time to database
-        let newRecentSearch = new RecentSearch({
-            query: query,
-            timestamp: Date.now()
-        });    
+    })
 
-        return newRecentSearch.save( (err, newRecentSearch) => {
-
-            if (err) {
-                return res.status(500).end(err);
-            }
-
-            return;
-        });
-
+    .then(query => {
+        console.log('query saved!', query);
     })
 
     .catch( error => {

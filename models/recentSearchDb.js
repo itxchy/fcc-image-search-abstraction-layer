@@ -28,6 +28,23 @@ exports.findRecentSearches = function (res) {
 };
 
 /**
+ * Saves the current search entry
+ * 
+ * @param {string} query - The search query as a param
+ * @returns {promise} Returns a promise from Mongoose's .save() method
+ */
+exports.saveRecentSearch = function (query) {
+
+    let newRecentSearch = new RecentSearch({
+        query: query,
+        timestamp: Date.now()
+    }); 
+
+    return newRecentSearch.save();
+
+};
+
+/**
  * Formats the found documents to display the search query, and 
  * the timestamp, converted to simplified ISO 8601 Extended Format:
  * http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
@@ -51,3 +68,4 @@ function formatResults(result) {
 
     return formattedRecentQueries;
 }
+
