@@ -1,5 +1,6 @@
-const mongoose     = require('mongoose');
-const RecentSearch = require('./models/recentSearch');
+const mongoose       = require('mongoose');
+const RecentSearch   = require('./models/recentSearch');
+const recentSearchDb = require('./models/recentSearchDb');
 
 const compression  = require('compression');
 const env          = require('node-env-file');
@@ -51,30 +52,11 @@ app.use('/', express.static(__dirname + '/public'));
 
 app.get('/api/recent', (req, res) => {
 
-    return RecentSearch
-        .find()
-        .sort({ _id: -1 })
-        .limit(20)
-        .exec((err, result) => {
-
-            if (err) {
-                return res.status(500).send('A database error occured: ', err);
-            }
-
-            let recentSearchQueries = result.map( search => {
-
-                let convertedTimestamp = new Date(+search.timestamp);
-
-                let formattedResult = {
-                    query: search.query,
-                    time: convertedTimestamp
-                };
-
-                return formattedResult;
-            });
-
+    return recentSearchDb.findRecentSearches(res)
+        .then( recentSearchQueries => {
             return res.json(recentSearchQueries);
         });
+
 });
 
 app.get('/api/search/:query', (req, res) => {
