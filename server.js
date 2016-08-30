@@ -1,9 +1,11 @@
-const compression = require('compression');
-const env         = require('node-env-file');
-const request     = require('request-promise');
-const mongoose    = require('mongoose');
-const express     = require('express');
-const app         = express();
+const mongoose     = require('mongoose');
+const RecentSearch = require('./models/recentSearch');
+
+const compression  = require('compression');
+const env          = require('node-env-file');
+const request      = require('request-promise');
+const express      = require('express');
+const app          = express();
 
 /**
  * To set up this API, a valid Client ID from imgur is required.
@@ -49,6 +51,30 @@ app.use('/', express.static(__dirname + '/public'));
 
 app.get('/api/recent', (req, res) => {
 
+    return RecentSearch
+        .find()
+        .sort({ _id: -1 })
+        .limit(20)
+        .exec((err, result) => {
+
+            if (err) {
+                return res.status(500).send('A database error occured: ', err);
+            }
+
+            let recentSearchQueries = result.map( search => {
+
+                let convertedTimestamp = new Date(+search.timestamp);
+
+                let formattedResult = {
+                    query: search.query,
+                    time: convertedTimestamp
+                };
+
+                return formattedResult;
+            });
+
+            return res.json(recentSearchQueries);
+        });
 });
 
 app.get('/api/search/:query', (req, res) => {
@@ -76,14 +102,19 @@ app.get('/api/search/:query', (req, res) => {
     }).then( () => {
 
         // write search query and time to database
-        let currentSearch = {
+        let newRecentSearch = new RecentSearch({
             query: query,
             timestamp: Date.now()
-        };
+        });    
 
-        
+        return newRecentSearch.save( (err, newRecentSearch) => {
 
-        console.log(currentSearch);
+            if (err) {
+                return res.status(500).end(err);
+            }
+
+            return;
+        });
 
     })
 
