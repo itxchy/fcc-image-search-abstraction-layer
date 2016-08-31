@@ -4,7 +4,7 @@
   "description": "Image search abstraction layer API. Another back end project for Free Code Camp",
   "main": "source/index.html",
   "scripts": {
-    "test": "mocha ./*.spec.js",
+    "test": "mocha ./*.spec.js"
   },
   "author": "Matt Trifilo",
   "license": "MIT",
