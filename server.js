@@ -1,5 +1,5 @@
 const mongoose       = require('mongoose');
-mongoose.Promise = require('bluebird');
+mongoose.Promise     = require('bluebird');
 const RecentSearch   = require('./models/recentSearch');
 const recentSearchDb = require('./models/recentSearchDb');
 
