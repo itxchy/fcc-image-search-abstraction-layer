@@ -17,6 +17,12 @@ const app          = express();
  * either add the .env file the server (as long as it's not 
  * deployed through a public git repository), or export the 
  * environment variable directly on the production server.
+ *
+ * Production environment variables:
+ * 
+ * NODE_ENV=production
+ * MONGO_URI=[deployed MongoDB URI]
+ * CLIENT_ID=[valid client ID from Imgur]
  */
 
 
@@ -33,8 +39,18 @@ if (process.env.NODE_ENV !== 'production') {
  * Connect to MongoDB
  */
 
-// dev URI
-mongoose.connect('mongodb://localhost:27017/local');
+if (process.env.NODE_ENV === 'production') {
+    mongoose.connect(process.env.MONGO_URI);
+} else {
+
+    /**
+     * === development Mongo URI ===
+     * create a directory named 'data' in the root of this project 
+     * and start connect to the local database with this command:
+     * $ mongod --port 27017 --dbpath=./data
+     */
+    mongoose.connect('mongodb://localhost:27017/local');    
+}
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, '\n ERROR: Mongoose encountered an error ->'));
