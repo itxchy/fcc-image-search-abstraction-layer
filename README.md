@@ -2,9 +2,28 @@
 
 Another back end project for Free Code Camp.
 
-Pass a search term to this API as a param. You'll get back image results from Imgur. 
+Search for images using Imgur's API, and receive the results in JSON. You can also request a list in JSON of the 20 most recent image searches. 
 
-If you add an offset param (i.e. `[url]/api/search/[image query]?offset=[number]`), you'll get back the request paginated page of results.
+Pagination is available for search results as well, so you can retrieve as many results as you need.
+
+## Endpoints
+
+`/api/search/`
+`/api/recent/`
+
+Pagination Query Parameter:
+`offset`
+
+## Examples
+
+Image Search:
+`this.site/api/search/grumpy cat`
+
+Recent Searches:
+`this.site/api/recent`
+
+Image Search, page 8:
+`this.site/api/search/grumpy cat?offset=8`
 
 ## Usage
 
