@@ -42,13 +42,8 @@ if (process.env.NODE_ENV !== 'production') {
 if (process.env.NODE_ENV === 'production') {
     mongoose.connect(process.env.MONGOLAB_URI);
 } else {
-
-    /**
-     * === development Mongo URI ===
-     * create a directory named 'data' in the root of this project 
-     * and start connect to the local database with this command:
-     * $ mongod --port 27017 --dbpath=./data
-     */
+    // to start a local Mongo database, create a directory named 'data',
+    // and run 'npm run mongo' to start the dev database
     mongoose.connect('mongodb://localhost:27017/local');    
 }
 
