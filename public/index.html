@@ -22,14 +22,33 @@
 
         <main class="container content">
 
-            <h1>Image Search Abstraction Layer</h1>
+            <h1>Image Search Abstraction Layer</h1><br>
+
+            <p>Search for images using Imgur's API, and receive the results in JSON. You can also request a list in JSON of the 20 most recent image searches.</p>
+
+            <p>Pagination is available for search results as well, so you can retrieve as many results as you need.</p>
+
+            <h2>Endpoints</h2>
+            <p>
+                <code>/api/search/</code><i class="faded">Nick Cage</i> 
+                <br>
+                <code>/api/recent</code>
+            </p>
+
+            <p>Pagination Query Parameter:</p>
+            <p><code>offset</code></p>
+
+            <h2>Examples</h2>
+            <p>Image Search:<br>
+                <code><a href="api/search/grumpy cat">this.site/api/search/grumpy cat</a></code>
+            </p>
+            <p>Recent Searches:<br>
+                <code><a href="api/recent">this.site/api/recent</a></code>
+            </p>
+            <p>Image Search, page 8:<br>
+                <code><a href="api/search/grumpy cat?offset=8">this.site/api/search/grumpy cat?offset=8</a></code>
+            </p>
             
-            <h2>Usage</h2>
-
-            <p>Go to [this url]/<a href="api/recent">recent</a> to get a list of recent image searches.</p>
-
-            <p>You can add a search term as a param to [this url]/api/search/[search term] . If you wanted to search for motivation memes, you can try <a href="/api/search/motivation">[this url]/api/search/motivation</a></p>
-
         </main>
 
         <script 
